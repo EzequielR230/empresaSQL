@@ -230,3 +230,30 @@ SELECT * FROM Personal.TEmpleado WHERE nEdad BETWEEN 25 AND 40;
 SELECT COUNT(*) AS TotalActivos FROM Personal.TEmpleado WHERE bActivo = 1;
 
 SELECT COUNT(*) AS TotalProyectos FROM Operaciones.TProyecto;
+
+ALTER TABLE Personal.TEmpleado DROP CONSTRAINT CHK_Empleado_Edad;
+
+-- 72. Eliminar la restricción UNIQUE del correo.
+ALTER TABLE Personal.TEmpleado DROP CONSTRAINT UQ_Empleado_Email;
+
+-- 73. Agregar nuevamente ambas restricciones.
+ALTER TABLE Personal.TEmpleado ADD CONSTRAINT CHK_Empleado_Edad CHECK (nEdad BETWEEN 18 AND 65);
+ALTER TABLE Personal.TEmpleado ADD CONSTRAINT UQ_Empleado_Email UNIQUE (cEmail);
+
+-- 74 a 79. Eliminar las tablas en orden respetando dependencias de esquemas.
+DROP TABLE Operaciones.TEmpleadoProyecto;
+DROP TABLE Operaciones.TProyecto;
+DROP TABLE Personal.TEmpleado;
+DROP TABLE Personal.TCargo;
+DROP TABLE Personal.TDepartamento;
+DROP TABLE Personal.TSucursal;
+
+-- IMPORTANTE: Para borrar la base de datos por completo, los esquemas deben ser removidos primero si están vacíos.
+DROP SCHEMA Operaciones;
+DROP SCHEMA Personal;
+
+-- 80. Eliminar la base de datos EmpresaSQL.
+USE master;
+GO
+DROP DATABASE EmpresaSQL;
+GO
