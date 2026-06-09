@@ -176,3 +176,57 @@ DELETE FROM Operaciones.TEmpleadoProyecto WHERE nEmpleadoID = 1;
 
 -- 53. Eliminar un departamento que no tenga empleados asociados.
 DELETE FROM Personal.TDepartamento WHERE nDepartamentoID NOT IN (SELECT DISTINCT nDepartamentoID FROM Personal.TEmpleado WHERE nDepartamentoID IS NOT NULL);
+
+SELECT * FROM Personal.TEmpleado ORDER BY cApellido ASC;
+
+SELECT * FROM Personal.TEmpleado WHERE nSalario > 1000;
+
+SELECT * FROM Personal.TEmpleado WHERE bActivo = 1;
+
+SELECT * FROM Personal.TEmpleado WHERE YEAR(dFechaContratacion) = 2026;
+
+SELECT E.cNombre, E.cApellido, D.cNombreDepartamento 
+FROM Personal.TEmpleado E
+INNER JOIN Personal.TDepartamento D ON E.nDepartamentoID = D.nDepartamentoID;
+
+SELECT E.cNombre, E.cApellido, C.cNombreCargo 
+FROM Personal.TEmpleado E
+INNER JOIN Personal.TCargo C ON E.nCargoID = C.nCargoID;
+
+SELECT E.cNombre, E.cApellido, P.cNombreProyecto 
+FROM Personal.TEmpleado E
+INNER JOIN Operaciones.TEmpleadoProyecto EP ON E.nEmpleadoID = EP.nEmpleadoID
+INNER JOIN Operaciones.TProyecto P ON EP.nProyectoID = P.nProyectoID;
+
+SELECT D.cNombreDepartamento, COUNT(E.nEmpleadoID) AS CantidadEmpleados
+FROM Personal.TDepartamento D
+LEFT JOIN Personal.TEmpleado E ON D.nDepartamentoID = E.nDepartamentoID
+GROUP BY D.cNombreDepartamento;
+
+SELECT D.cNombreDepartamento, AVG(E.nSalario) AS SalarioPromedio
+FROM Personal.TDepartamento D
+INNER JOIN Personal.TEmpleado E ON D.nDepartamentoID = E.nDepartamentoID
+GROUP BY D.cNombreDepartamento;
+
+SELECT D.cNombreDepartamento, MAX(E.nSalario) AS SalarioMaximo, MIN(E.nSalario) AS SalarioMinimo
+FROM Personal.TDepartamento D
+INNER JOIN Personal.TEmpleado E ON D.nDepartamentoID = E.nDepartamentoID
+GROUP BY D.cNombreDepartamento;
+
+SELECT P.cNombreProyecto, COUNT(EP.nEmpleadoID) AS CantidadEmpleados
+FROM Operaciones.TProyecto P
+INNER JOIN Operaciones.TEmpleadoProyecto EP ON P.nProyectoID = EP.nProyectoID
+GROUP BY P.cNombreProyecto
+HAVING COUNT(EP.nEmpleadoID) > 2;
+
+SELECT * FROM Personal.TEmpleado WHERE cApellido LIKE 'G%';
+
+SELECT * FROM Personal.TEmpleado ORDER BY nSalario DESC;
+
+SELECT TOP 3 nSalario FROM Personal.TEmpleado ORDER BY nSalario DESC;
+
+SELECT * FROM Personal.TEmpleado WHERE nEdad BETWEEN 25 AND 40;
+
+SELECT COUNT(*) AS TotalActivos FROM Personal.TEmpleado WHERE bActivo = 1;
+
+SELECT COUNT(*) AS TotalProyectos FROM Operaciones.TProyecto;
